@@ -1,0 +1,3 @@
+[submodule "oprofile"]
+	path = oprofile
+	url = https://git.code.sf.net/p/oprofile/oprofile
