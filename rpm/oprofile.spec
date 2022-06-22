@@ -2,7 +2,6 @@ Name:       oprofile
 Summary:    System wide profiler
 Version:    1.2.0
 Release:    1
-Group:      Development/Tools
 License:    GPL v2 or later
 URL:        https://github.com/sailfishos/oprofile
 Source0:    %{name}-%{version}.tar.gz
@@ -28,7 +27,6 @@ See the HTML documentation for further details.
 %package devel
 Summary:    System-Wide Profiler for Linux Systems
 License:    GPL v2 or later; LGPL v2.1 or later
-Group:      Development/Libraries
 Requires:   %{name} = %{version}-%{release}
 Requires:   binutils-devel
 
