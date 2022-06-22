@@ -4,7 +4,7 @@ Version:    1.2.0
 Release:    1
 Group:      Development/Tools
 License:    GPL v2 or later
-URL:        http://oprofile.sourceforge.net/
+URL:        https://github.com/sailfishos/oprofile
 Source0:    %{name}-%{version}.tar.gz
 
 Requires(pre): shadow-utils
