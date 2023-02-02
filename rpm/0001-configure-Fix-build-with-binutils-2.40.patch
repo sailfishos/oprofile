@@ -1,0 +1,48 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@jolla.com>
+Date: Thu, 2 Feb 2023 17:11:56 +0200
+Subject: [PATCH] configure: Fix build with binutils 2.40
+
+Workaround for an issue linking with bfd with binutils 2.40.
+---
+ configure.ac   | 2 +-
+ m4/binutils.m4 | 9 +++++----
+ 2 files changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index df032a78..03dbfb47 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -333,7 +333,7 @@ AX_CHECK_DOCBOOK
+ dnl finally restore the original libs setting
+ LIBS="$ORIG_SAVE_LIBS"
+ LIBERTY_LIBS="-liberty $DL_LIB $INTL_LIB"
+-BFD_LIBS="-lbfd -liberty $DL_LIB $INTL_LIB $Z_LIB"
++BFD_LIBS="-lbfd -lsframe -liberty $DL_LIB $INTL_LIB $Z_LIB"
+ POPT_LIBS="-lpopt"
+ AC_SUBST(LIBERTY_LIBS)
+ AC_SUBST(BFD_LIBS)
+diff --git a/m4/binutils.m4 b/m4/binutils.m4
+index c50e2f3c..4c7067dd 100644
+--- a/m4/binutils.m4
++++ b/m4/binutils.m4
+@@ -10,14 +10,15 @@ AC_CHECK_FUNCS(xmemdup)
+ AC_CHECK_LIB(dl, dlopen, LIBS="$LIBS -ldl"; DL_LIB="-ldl", DL_LIB="")
+ AC_CHECK_LIB(intl, main, LIBS="$LIBS -lintl"; INTL_LIB="-lintl", INTL_LIB="")
+ 
+-AC_CHECK_LIB(bfd, bfd_openr, LIBS="-lbfd $LIBS"; Z_LIB="",
++AC_CHECK_LIB(bfd, bfd_openr, LIBS="-lsframe -lbfd $LIBS"; Z_LIB="",
+ 	[AC_CHECK_LIB(z, compress,
+ dnl Use a different bfd function here so as not to use cached result from above
+-		[AC_CHECK_LIB(bfd, bfd_fdopenr, LIBS="-lbfd -lz $LIBS"; Z_LIB="-lz",
+-			[AC_MSG_ERROR([bfd library not found])], -lz)
++		[AC_CHECK_LIB(bfd, bfd_fdopenr, LIBS="-lsframe -lbfd -lz $LIBS"; Z_LIB="-lz",
++			[AC_MSG_ERROR([bfd library not found])], -lsframe -lz)
+ 		],
+ 		[AC_MSG_ERROR([libz library not found; required by libbfd])])
+-	]
++	],
++	-lsframe
+ )
+ 
+ AC_LANG_PUSH(C)

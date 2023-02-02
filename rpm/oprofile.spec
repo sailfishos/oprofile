@@ -1,10 +1,11 @@
 Name:       oprofile
 Summary:    System wide profiler
-Version:    1.2.0
+Version:    1.4.0
 Release:    1
 License:    GPL v2 or later
 URL:        https://github.com/sailfishos/oprofile
 Source0:    %{name}-%{version}.tar.gz
+Patch0:     0001-configure-Fix-build-with-binutils-2.40.patch
 
 Requires(pre): shadow-utils
 BuildRequires: pkgconfig(popt)
@@ -34,7 +35,7 @@ Requires:   binutils-devel
 Header files and libraries for developing apps which will use oprofile.
 
 %prep
-%setup -q -n %{name}-%{version}/%{name}
+%autosetup -p1 -n %{name}-%{version}/%{name}
 
 %build
 sh autogen.sh
@@ -45,10 +46,9 @@ sh autogen.sh
     --libdir=%{_libdir} \
     --with-kernel-support
 
-make %{?_smp_mflags}
+%make_build
 
 %install
-rm -rf %{buildroot}
 %make_install
 
 %fdupes  %{buildroot}/%{_datadir}
@@ -59,7 +59,8 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc COPYING README TODO
+%license COPYING
+%doc README TODO
 %doc %{_docdir}/oprofile/*
 %dir %{_libdir}/oprofile
 %{_bindir}/*
