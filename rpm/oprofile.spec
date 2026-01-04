@@ -2,10 +2,9 @@ Name:       oprofile
 Summary:    System wide profiler
 Version:    1.4.0
 Release:    1
-License:    GPL v2 or later
+License:    GPLv2+
 URL:        https://github.com/sailfishos/oprofile
 Source0:    %{name}-%{version}.tar.gz
-Patch0:     0001-configure-Fix-build-with-binutils-2.40.patch
 
 Requires(pre): shadow-utils
 BuildRequires: pkgconfig(popt)
@@ -58,7 +57,6 @@ sh autogen.sh
 /usr/sbin/useradd -r -g oprofile -d /var/lib/empty -s /bin/false -c "Special user account to be used by OProfile" oprofile 2>/dev/null || :
 
 %files
-%defattr(-,root,root,-)
 %license COPYING
 %doc README TODO
 %doc %{_docdir}/oprofile/*
@@ -68,9 +66,7 @@ sh autogen.sh
 %{_libdir}/oprofile/*.so.*
 
 %files devel
-%defattr(-,root,root,-)
 %dir %{_libdir}/oprofile
 %{_includedir}/*
 %{_libdir}/oprofile/*.so
 %{_mandir}/man1/*
-
